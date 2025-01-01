@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send OTP</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        .input-field {
+            margin: 20px 0;
+            width: 100%;
+        }
+        .input-field input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .btn {
+            padding: 12px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Enter Your Gmail</h1>
+    <div class="input-field">
+        <input type="email" id="email" placeholder="Enter Gmail" required>
+    </div>
+    <button class="btn" id="sendOtpButton">Send OTP</button>
+    <p id="statusMessage"></p>
+</div>
+
+<script>
+    document.getElementById('sendOtpButton').addEventListener('click', function() {
+        const email = document.getElementById('email').value;
+
+        // Check if email is not empty
+        if (email.trim() === '') {
+            document.getElementById('statusMessage').innerText = 'Please enter a valid email.';
+            document.getElementById('statusMessage').style.color = 'red';
+            return;
+        }
+
+        // Send OTP request to the backend
+        fetch('http://localhost:3000/send-otp', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email: email }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'OTP sent successfully') {
+                document.getElementById('statusMessage').innerText = 'OTP sent to your email!';
+                document.getElementById('statusMessage').style.color = 'green';
+            } else {
+                document.getElementById('statusMessage').innerText = 'Failed to send OTP.';
+                document.getElementById('statusMessage').style.color = 'red';
+            }
+        })
+        .catch(error => {
+            document.getElementById('statusMessage').innerText = 'Error sending OTP.';
+            document.getElementById('statusMessage').style.color = 'red';
+        });
+    });
+</script>
+
+</body>
+</html>

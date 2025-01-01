@@ -11,4 +11,4 @@ Here when you open the visual studio you have to install these dependencies to r
    so all this install in termial type this given below
    npm install express nodemailer body-parser
    ![image](https://github.com/user-attachments/assets/5e7d9b18-8484-4572-ad12-ffabfbc89cb6)
- after you install all this its shown like this 
+after you install all this its shown like this 

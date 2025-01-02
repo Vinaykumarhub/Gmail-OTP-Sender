@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
 const cors = require('cors');
+require('dotenv').config(); // For environment variables
 
 const app = express();
 const port = 3000;
@@ -14,8 +15,8 @@ app.use(cors());
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'yadamma077@gmail.com', // Replace with your Gmail address
-    pass: 'rqyj jibq nhmz fytw', // Replace with your Gmail App password
+    user: process.env.EMAIL_USER, // Email address from .env
+    pass: process.env.EMAIL_PASS, // App password from .env
   },
 });
 
@@ -26,8 +27,8 @@ const otps = {};
 app.post('/send-otp', (req, res) => {
   const { email } = req.body;
 
-  if (!email) {
-    return res.status(400).json({ status: 'Email is required.' });
+  if (!email || !validateEmail(email)) {
+    return res.status(400).json({ status: 'Invalid or missing email address.' });
   }
 
   // Generate a 6-digit OTP
@@ -36,24 +37,35 @@ app.post('/send-otp', (req, res) => {
   // Store OTP temporarily
   otps[email] = otp;
 
+  // Automatically delete OTP after 5 minutes
+  setTimeout(() => {
+    delete otps[email];
+  }, 300000);
+
   // Email message setup
   const mailOptions = {
-    from: 'yadamma077@gmail.com',
+    from: process.env.EMAIL_USER,
     to: email,
     subject: 'Your OTP for Verification',
-    text: `Your OTP is: ${otp}`,
+    text: `Your OTP is: ${otp}\nThis OTP will expire in 5 minutes.`,
   };
 
   // Send the email
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.error('Error sending OTP: ', error);
-      return res.status(500).json({ status: 'Failed to send OTP' });
+      return res.status(500).json({ status: 'Failed to send OTP', error: error.message });
     }
     console.log('OTP sent: ' + info.response);
     res.status(200).json({ status: 'OTP sent successfully' });
   });
 });
+
+// Utility function to validate email
+function validateEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
 
 // Start the Server
 app.listen(port, () => {

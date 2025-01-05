@@ -1,15 +1,5 @@
 # Gmail-OTP-Sender
-In this project we should run the first backend code that is (otp-server.js) also its server. And one more important thing is to make sure your already install the node js and npm in you laptop (or) Pc 
-check the version by type this in cmd 
-node --version
-npm --version 
-after type it show the version its installed in laptop (or) Pc
-Here when you open the visual studio you have to install these dependencies to run the this project
-1. express
-2. nodemailer
-3. body-parser
-   so all this install in termial type this given below
-   npm install express nodemailer body-parser
+To set up and run the project, the first step is to configure the backend by running the **`otp-server.js`** file, which acts as the server. Before proceeding, ensure that Node.js and npm (Node Package Manager) are installed on your laptop or PC. You can verify this by opening the Command Prompt (cmd) and typing `node --version` and `npm --version`. If the versions are displayed, it means Node.js and npm are properly installed; otherwise, download and install Node.js from its official website. Next, open the project in Visual Studio Code, where you’ll need to install three essential dependencies: **express** (for building the server), **nodemailer** (for sending emails like OTPs), and **body-parser** (for processing data sent from the frontend). To install these, open the terminal in Visual Studio Code and type `npm install express nodemailer body-parser`. Once the dependencies are installed, navigate to the location of the **`otp-server.js`** file in the terminal and run it using the command `node otp-server.js`. This will start the backend server, enabling it to handle requests and send OTPs. Make sure these steps are completed to ensure the project runs successfully.
    ![image](https://github.com/user-attachments/assets/5e7d9b18-8484-4572-ad12-ffabfbc89cb6)
 after you install all this its shown like this
 then you have to run this otp-server.js by type this in terminal node otp-server.js when you run this its shown like this
